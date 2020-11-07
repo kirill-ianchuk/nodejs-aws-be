@@ -1,0 +1,116 @@
+openapi: 3.0.3
+info:
+  description: |
+    Product Service
+
+  version: "1.0.0"
+  title: Product Service
+
+servers:
+  - url: 'https://fnycl1qikh.execute-api.eu-west-1.amazonaws.com/dev'
+    description: Dev environment
+
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get products
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsList'
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Get a product by id
+      parameters:
+        - $ref: '#/components/parameters/productIdPathParameter'
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        404:
+          description: 'Not Found Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductNotFoundError'
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+components:
+  schemas:
+    ProductsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+    Product:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - count
+        - price
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          example: ProductOne
+        description:
+          type: string
+          example: Short Product Description
+        count:
+          type: integer
+          example: 4
+        price:
+          type: number
+          format: double
+          example: 10.5
+    ProductNotFoundError:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          enum:
+            - 'Product was not found'
+    InternalServerError:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: 'Unexpected error occurred'
+
+  parameters:
+    productIdPathParameter:
+      name: productId
+      description: Product id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
