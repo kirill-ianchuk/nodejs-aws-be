@@ -47,3 +47,46 @@ export const getProductById = async (productId) => {
         await client.end();
     }
 };
+
+export const createProduct = async (payload) => {
+    const client = new Client(config.db);
+
+    await client.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        const productInsertQueryString = queryBuilder
+            .insert({
+                title: payload.title,
+                description: payload.description,
+                price: payload.price
+            })
+            .into('product')
+            .returning('id')
+            .toString();
+
+        const productInsertResult = await client.query(productInsertQueryString);
+        const createdProduct = productInsertResult.rows[0];
+
+        const stockInsertQueryString = queryBuilder
+            .insert({
+                product_id: createdProduct.id,
+                count: payload.count,
+            })
+            .into('stock')
+            .toString();
+
+        await client.query(stockInsertQueryString);
+
+        await client.query('COMMIT');
+
+        return productInsertResult.rows[0];
+    } catch (err) {
+        await client.query('ROLLBACK');
+
+        throw err;
+    } finally {
+        await client.end();
+    }
+};
