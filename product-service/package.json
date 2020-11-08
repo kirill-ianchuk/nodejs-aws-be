@@ -8,12 +8,14 @@
     "deploy": "sls deploy"
   },
   "dependencies": {
+    "joi": "^17.3.0",
     "knex": "^0.21.12",
     "pg": "^8.4.2",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
+    "@types/joi": "^14.3.4",
     "@types/knex": "^0.16.1",
     "@types/node": "^10.12.18",
     "@types/pg": "^7.14.6",

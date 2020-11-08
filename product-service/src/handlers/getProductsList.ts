@@ -3,8 +3,10 @@ import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import * as utils from '../utils';
 import * as productModel from '../models/product';
 
-export const getProductsList: APIGatewayProxyHandler = async () => {
+export const getProductsList: APIGatewayProxyHandler = async (event) => {
     let result: APIGatewayProxyResult;
+
+    console.log(`Received event ${event.httpMethod} ${event.path}`);
 
     try {
         const productsList = await productModel.getProductsList();

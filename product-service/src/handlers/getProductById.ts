@@ -6,6 +6,8 @@ import * as productModel from '../models/product';
 export const getProductById: APIGatewayProxyHandler = async (event) => {
     let result: APIGatewayProxyResult;
 
+    console.log(`Received event ${event.httpMethod} ${event.path} ${event.pathParameters}`);
+
     try {
         const product = await productModel.getProductById(event.pathParameters.id);
 
