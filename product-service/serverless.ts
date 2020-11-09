@@ -22,6 +22,7 @@ const serverlessConfiguration: Serverless = {
     stage: 'dev',
     region: 'eu-west-1',
     profile: 'nodejs-in-aws',
+    endpointType: 'regional',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
