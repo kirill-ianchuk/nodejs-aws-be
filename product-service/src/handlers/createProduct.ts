@@ -16,9 +16,8 @@ export const createProduct: APIGatewayProxyHandler = async (event) => {
 
     console.log(`Received event ${event.httpMethod} ${event.path} ${event.body}`);
 
-    const payload = JSON.parse(event.body);
-
     try {
+        const payload = JSON.parse(event.body);
         Joi.assert(payload, requestBodySchema, { abortEarly: false });
 
         const product = await productModel.createProduct(payload);
