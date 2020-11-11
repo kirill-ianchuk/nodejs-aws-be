@@ -13,8 +13,7 @@ module.exports = {
     ],
     testEnvironment: 'node',
     collectCoverageFrom: [
-        './handlers/**/*.ts',
-        './utils/**/*.ts',
+        'src/**/*.ts',
     ],
     collectCoverage: true,
     coverageDirectory:'./coverage',

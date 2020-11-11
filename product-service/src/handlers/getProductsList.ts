@@ -1,14 +1,15 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 
 import * as utils from '../utils';
+import * as productModel from '../models/product';
 
-export const getProductsList: APIGatewayProxyHandler = async () => {
+export const getProductsList: APIGatewayProxyHandler = async (event) => {
     let result: APIGatewayProxyResult;
 
-    try {
-        await utils.simulateNetworkRequest();
+    console.log(`Received event ${event.httpMethod} ${event.path}`);
 
-        const productsList = require('../data/productsList.json');
+    try {
+        const productsList = await productModel.getProductsList();
 
         result = {
             statusCode: 200,
