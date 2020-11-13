@@ -1,11 +1,10 @@
 import { Serverless } from 'serverless/aws';
 
+import config from './config';
+
 const serverlessConfiguration: Serverless = {
   service: {
     name: 'import-service',
-    // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
   },
   frameworkVersion: '2',
   custom: {
@@ -14,15 +13,21 @@ const serverlessConfiguration: Serverless = {
       includeModules: true
     }
   },
-  // Add the serverless-webpack plugin
   plugins: ['serverless-webpack'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
     stage: 'dev',
-    region: 'eu-west-1',
+    region: config.aws.region,
     profile: 'nodejs-in-aws',
     endpointType: 'regional',
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: ['s3:*'],
+        Resource: [`arn:aws:s3:::${config.aws.s3.bucket}/*`]
+      }
+    ],
     apiGateway: {
       minimumCompressionSize: 1024,
     },
@@ -31,18 +36,25 @@ const serverlessConfiguration: Serverless = {
     },
   },
   functions: {
-    hello: {
-      handler: 'handler.hello',
+    'import-products-file': {
+      handler: 'handler.importProductsFile',
       events: [
         {
           http: {
             method: 'get',
-            path: 'hello',
-          }
-        }
-      ]
-    }
-  }
-}
+            path: 'import',
+            request: {
+              parameters: {
+                querystrings: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+};
 
 module.exports = serverlessConfiguration;
