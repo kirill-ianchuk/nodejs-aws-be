@@ -4,6 +4,7 @@ export default {
         s3: {
             bucket: 'nodejs-in-aws-product-import',
             uploadFolderName: 'uploaded',
+            parsedFolderName: 'parsed',
         },
     },
 };
