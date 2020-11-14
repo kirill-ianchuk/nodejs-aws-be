@@ -6,11 +6,12 @@ import * as path from 'path';
 import config from '../../config';
 
 const importAndParseFileFromS3 = (
+    bucket: string,
     objectKey: string,
     s3: AWS.S3,
 ): Promise<{[key: string]: string}[]> => new Promise((resolve, reject) => {
     const params = {
-        Bucket: config.aws.s3.bucket,
+        Bucket: bucket,
         Key: objectKey
     };
 
@@ -49,7 +50,11 @@ export const importFileParser: S3Handler = async (event) => {
     const s3 = new AWS.S3({ region: config.aws.region });
 
     for (const record of event.Records) {
-        const products = await importAndParseFileFromS3(record.s3.object.key, s3);
+        const products = await importAndParseFileFromS3(
+            config.aws.s3.bucket,
+            record.s3.object.key,
+            s3,
+        );
 
         products.forEach(product => console.log(JSON.stringify(product, null, 2)));
 
