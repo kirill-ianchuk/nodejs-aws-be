@@ -4,9 +4,9 @@ import csv from 'csv-parser';
 
 import config from '../../config';
 
-const s3 = new AWS.S3({ region: config.aws.region });
-
 const importAndParseFileFromS3 = (s3objectKey: string): Promise<{[key: string]: string}[]> => new Promise((resolve, reject) => {
+    const s3 = new AWS.S3({ region: config.aws.region });
+
     const params = {
         Bucket: config.aws.s3.bucket,
         Key: s3objectKey

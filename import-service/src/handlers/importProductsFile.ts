@@ -6,13 +6,13 @@ import Joi from 'joi';
 import config from '../../config';
 import * as utils from '../utils';
 
-const s3 = new AWS.S3({ region: config.aws.region });
-
 const queryParamsSchema = Joi.object({
     name: Joi.string().required(),
 });
 
 export const importProductsFile: APIGatewayProxyHandler = async (event) => {
+    const s3 = new AWS.S3({ region: config.aws.region });
+
     let result: APIGatewayProxyResult;
 
     try {
