@@ -90,3 +90,45 @@ export const createProduct = async (payload) => {
         await client.end();
     }
 };
+
+export const createProductsBatch = async (payload) => {
+    const client = new Client(config.db);
+
+    await client.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        const productInsertQueryString = queryBuilder
+            .insert(payload.map(({ title, description, price }) => ({ title, description, price })))
+            .into('product')
+            .returning('id')
+            .toString();
+
+        const productInsertResult = await client.query(productInsertQueryString);
+
+        const createdProducts = productInsertResult.rows;
+
+        const stockInsertQueryString = queryBuilder
+            .insert(payload.map((product, index) => ({
+                product_id: createdProducts[index].id,
+                count: product.count,
+            })))
+            .into('stock')
+            .toString();
+
+        await client.query(stockInsertQueryString);
+
+        await client.query('COMMIT');
+
+        console.log(`Created products: ${productInsertResult.rows}`);
+
+        return createdProducts;
+    } catch (err) {
+        await client.query('ROLLBACK');
+
+        throw err;
+    } finally {
+        await client.end();
+    }
+};

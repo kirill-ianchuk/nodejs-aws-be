@@ -2,6 +2,8 @@ import { Serverless } from 'serverless/aws';
 
 import config from './config';
 
+const productServiceStackName = config.aws.productService.stackName;
+
 const serverlessConfiguration: Serverless = {
   service: {
     name: 'import-service',
@@ -26,6 +28,11 @@ const serverlessConfiguration: Serverless = {
         Effect: 'Allow',
         Action: ['s3:*'],
         Resource: [`arn:aws:s3:::${config.aws.s3.bucket}/*`]
+      },
+      {
+        Effect: 'Allow',
+        Action: ['sqs:SendMessage'],
+        Resource: [`\$\{cf:${productServiceStackName}.SQSArn\}`]
       }
     ],
     apiGateway: {
@@ -33,6 +40,7 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      SQS_URL: `\$\{cf:${productServiceStackName}.SQSUrl\}`
     },
   },
   functions: {

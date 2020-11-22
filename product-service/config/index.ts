@@ -9,5 +9,8 @@ export default {
             rejectUnauthorized: false,
         },
         connectionTimeoutMillis: 5000,
+    },
+    aws: {
+        region: 'eu-west-1',
     }
 }

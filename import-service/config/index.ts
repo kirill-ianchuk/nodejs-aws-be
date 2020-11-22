@@ -6,5 +6,8 @@ export default {
             uploadFolderName: 'uploaded',
             parsedFolderName: 'parsed',
         },
+        productService: {
+            stackName: 'product-service-dev',
+        },
     },
 };
