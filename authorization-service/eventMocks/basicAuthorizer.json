@@ -1,0 +1,4 @@
+{
+  "authorizationToken": "Basic XXX",
+  "methodArn": "aws:method:arn"
+}
