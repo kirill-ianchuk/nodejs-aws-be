@@ -8,6 +8,7 @@
     "deploy": "sls deploy"
   },
   "dependencies": {
+    "aws-sdk": "^2.797.0",
     "joi": "^17.3.0",
     "knex": "^0.21.12",
     "pg": "^8.4.2",
@@ -20,11 +21,13 @@
     "@types/node": "^10.12.18",
     "@types/pg": "^7.14.6",
     "@types/serverless": "^1.72.5",
+    "@types/sinon": "^9.0.8",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
     "jest": "^26.6.1",
     "jest-openapi": "^0.10.0",
     "serverless-webpack": "^5.2.0",
     "sinon": "^9.2.1",
+    "stdout-stderr": "^0.1.13",
     "ts-jest": "^26.4.3",
     "ts-loader": "^5.3.3",
     "ts-node": "^8.10.2",
