@@ -15,7 +15,10 @@ const serverlessConfiguration: Serverless = {
       includeModules: true
     }
   },
-  plugins: ['serverless-webpack'],
+  plugins: [
+      'serverless-webpack',
+      'serverless-pseudo-parameters'
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
@@ -43,6 +46,28 @@ const serverlessConfiguration: Serverless = {
       SQS_URL: `\$\{cf:${productServiceStackName}.SQSUrl\}`
     },
   },
+  resources: {
+    Resources: {
+      ApiGatewayRestApi: {
+        Type: 'AWS::ApiGateway::RestApi',
+        Properties: {
+          Name: '${self:service}-${self:provider.stage}'
+        }
+      },
+      GatewayResponseDefault4XX: {
+        Type: 'AWS::ApiGateway::GatewayResponse',
+        Properties: {
+          ResponseParameters: {
+            'gatewayresponse.header.Access-Control-Allow-Origin': '\'*\''
+          },
+          ResponseType: 'DEFAULT_4XX',
+          RestApiId: {
+            Ref: 'ApiGatewayRestApi'
+          }
+        }
+      }
+    }
+  },
   functions: {
     'import-products-file': {
       handler: 'handler.importProductsFile',
@@ -58,6 +83,17 @@ const serverlessConfiguration: Serverless = {
                 },
               },
             },
+            authorizer: {
+              type: 'token',
+              name: 'tokenBasicAuthorizer',
+              arn: 'arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authorization-service-dev-basic-authorizer',
+              resultTtlInSeconds: 0,
+              identitySource: 'method.request.header.Authorization'
+            },
+            cors: {
+              origins: '*',
+              headers: ['Authorization']
+            }
           },
         },
       ],
