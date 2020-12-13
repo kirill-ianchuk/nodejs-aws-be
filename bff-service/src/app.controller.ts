@@ -60,6 +60,6 @@ export class AppController {
   }
 
   static isCacheableRequest(req: Request): boolean {
-    return req.method.toUpperCase() === 'GET' && /^\/product\/products\/?$/.test(req.originalUrl.split('?')[0]);
+    return req.method.toUpperCase() === 'GET' && /^\/product-service\/products\/?$/.test(req.originalUrl.split('?')[0]);
   }
 }
