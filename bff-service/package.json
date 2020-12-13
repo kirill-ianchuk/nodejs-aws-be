@@ -13,7 +13,8 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "eb:build": "./scripts/build.sh",
-    "eb:build:deploy": "./scripts/build-and-deploy.sh"
+    "eb:deploy": "eb deploy",
+    "eb:build:deploy": "npm run eb:build && npm run eb:deploy"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
