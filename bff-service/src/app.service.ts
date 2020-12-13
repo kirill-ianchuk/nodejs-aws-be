@@ -9,7 +9,7 @@ export class AppService {
       baseURL: serviceBaseUrl,
       url: req.originalUrl.split('/').slice(2).join('/'),
       method: req.method as Method,
-      data: req.body
+      data: Object.keys(req.body || {}).length > 0 ? req.body : undefined
     })
   }
 }
