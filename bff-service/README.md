@@ -19,7 +19,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Deploy to AWS Beanstalk
+## Deploy using AWS Beanstalk
 
 ```bash
 $ npm run eb:build:deploy
