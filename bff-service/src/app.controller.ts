@@ -9,7 +9,7 @@ const CACHE_TTL_IN_SECONDS = 120;
 @Controller('*')
 export class AppController {
   constructor(
-      @Inject(CACHE_MANAGER) private cacheManager: Cache,
+      @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
       private readonly configService: ConfigService,
       private readonly appService: AppService,
   ) {}
