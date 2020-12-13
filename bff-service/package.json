@@ -11,7 +11,9 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main"
+    "start:prod": "node dist/main",
+    "eb:build": "./scripts/build.sh",
+    "eb:build:deploy": "./scripts/build-and-deploy.sh"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
@@ -34,5 +36,8 @@
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.5"
+  },
+  "engines": {
+    "node": "12.19.0"
   }
 }
